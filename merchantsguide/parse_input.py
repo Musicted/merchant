@@ -1,6 +1,6 @@
 from parsimonious import Grammar, ParseError, NodeVisitor
 
-from commands import MineralQueryCommand, MineralUpdateCommand, NumeralUpdateCommand, NumberQueryCommand
+from merchantsguide.commands import MineralQueryCommand, MineralUpdateCommand, NumeralUpdateCommand, NumberQueryCommand
 
 GRAMMAR = Grammar(
     r"""

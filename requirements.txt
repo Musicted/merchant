@@ -1,1 +1,2 @@
 parsimonious~=0.8.1
+singleton-decorator~=1.0.0

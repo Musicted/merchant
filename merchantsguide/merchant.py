@@ -12,7 +12,11 @@ class Merchant:
 
     @staticmethod
     def repl():
-        for cmd in stdin:
-            res = Merchant.single_command(cmd)
+        for line in stdin:
+            res = Merchant.single_command(line.strip())
             if res:
                 print(res)
+
+
+if __name__ == '__main__':
+    Merchant().repl()

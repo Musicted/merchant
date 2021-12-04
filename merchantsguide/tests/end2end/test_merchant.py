@@ -13,6 +13,8 @@ def test_trace1():
 
     m = Merchant()
     for i, o in zip(lines_in, lines_out):
+        i = i.strip()
+        o = o.strip()
         res = m.single_command(i)
         if o:
             assert res == o

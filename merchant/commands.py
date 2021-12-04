@@ -42,16 +42,22 @@ class MineralUpdateCommand(BaseCommand):
     Updates the price of a mineral in the registry.
     """
 
-    def __init__(self, mineral: str, units: int, price: int):
+    def __init__(self, mineral: str, units: [str], price: int):
         self.mineral = mineral
         self.units = units
         self.price = price
 
     def __repr__(self):
-        return f"{super().__repr__()}: set the price of {self.units} {self.mineral} to {self.price}"
+        return f"{super().__repr__()}: set the price of {' '.join(self.units)} {self.mineral} to {self.price}"
 
     def execute(self):
-        Registry().update_mineral(self.mineral, self.price/self.units)
+        try:
+            roman = _alien2roman(self.units)
+        except ValueError as e:
+            return str(e)
+        num_units = roman2int(roman)
+
+        Registry().update_mineral(self.mineral, self.price/num_units)
 
 
 class NumberQueryCommand(BaseCommand):
@@ -63,7 +69,7 @@ class NumberQueryCommand(BaseCommand):
         self.alien_number = alien_number
 
     def __repr__(self):
-        return f"{super().__repr__()}: calculates the decimal value of {self.alien_number}"
+        return f"{super().__repr__()}: calculates the decimal value of {' '.join(self.alien_number)}"
 
     def execute(self):
         try:
@@ -101,3 +107,4 @@ class MineralQueryCommand(BaseCommand):
         price = round(units * per_unit)
 
         return f"{' '.join(self.alien_number)} {self.mineral} is {price} Credits"
+

@@ -1,4 +1,6 @@
-from parsimonious import Grammar
+from parsimonious import Grammar, ParseError, NodeVisitor
+
+from commands import MineralQueryCommand, MineralUpdateCommand, NumeralUpdateCommand, NumberQueryCommand
 
 GRAMMAR = Grammar(
     r"""
@@ -26,3 +28,53 @@ GRAMMAR = Grammar(
     newline = ws ~"\n"
     """
 )
+
+
+class CommandVisitor(NodeVisitor):
+
+    def visit_input_string(self, node, visited_children):
+        return visited_children[0]
+
+    def visit_command(self, node, visited_children):
+        return visited_children[0][0]
+
+    def visit_query(self, node, visited_children):
+        return visited_children[0]
+
+    def visit_update(self, node, visited_children):
+        return visited_children[0]
+
+    def visit_numeral_update(self, node, visited_children):
+        alien, _, _, _, roman = visited_children
+        return NumeralUpdateCommand(alien, roman)
+
+    def visit_mineral_update(self, node, visited_children):
+        units, _, mineral, _, _, _, price, *_ = visited_children
+        return MineralUpdateCommand(mineral, units, int(price))
+
+    def visit_number_query(self, node, visited_children):
+        number = visited_children[4]
+        return NumberQueryCommand(number)
+
+    def visit_mineral_query(self, node, visited_children):
+        number, mineral = visited_children[6], visited_children[8]
+        return MineralQueryCommand(number, mineral)
+
+    def visit_alien_number(self, node, visited_children):
+        return node.text.split(" ")
+
+    def generic_visit(self, node, visited_children):
+        return visited_children or node.text
+
+
+VISITOR = CommandVisitor()
+
+
+def parse_input(s: str):
+    try:
+        tree = GRAMMAR.parse(s)
+    except ParseError:
+        return "I have no idea what you are talking about"
+
+    cmd = VISITOR.visit(tree)
+    return cmd.execute()

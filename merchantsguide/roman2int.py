@@ -61,6 +61,6 @@ def roman2int(s):
     try:
         tree = GRAMMAR.parse(s)
     except ParseError:
-        raise ValueError(f"Could not parse input {s}")
+        raise ValueError(f"Could not parse input '{s}' as roman numerals")
 
     return VISITOR.visit(tree)

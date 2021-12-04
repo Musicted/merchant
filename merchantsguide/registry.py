@@ -4,6 +4,10 @@ from singleton_decorator import singleton
 @singleton
 class Registry:
 
+    def reset(self):
+        self.alien_numerals = {}
+        self.mineral_prices = {}
+
     def __init__(self):
         self.alien_numerals = {}
         self.mineral_prices = {}

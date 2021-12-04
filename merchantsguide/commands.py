@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from roman2int import roman2int
-from registry import Registry
+from merchantsguide.roman2int import roman2int
+from merchantsguide.registry import Registry
 
 
 def _alien2roman(alien: [str]):
@@ -53,9 +53,9 @@ class MineralUpdateCommand(BaseCommand):
     def execute(self):
         try:
             roman = _alien2roman(self.units)
+            num_units = roman2int(roman)
         except ValueError as e:
             return str(e)
-        num_units = roman2int(roman)
 
         Registry().update_mineral(self.mineral, self.price/num_units)
 
@@ -74,10 +74,10 @@ class NumberQueryCommand(BaseCommand):
     def execute(self):
         try:
             roman = _alien2roman(self.alien_number)
+            value = roman2int(roman)
         except ValueError as e:
             return str(e)
 
-        value = roman2int(roman)
         return f"{' '.join(self.alien_number)} is {value}"
 
 
@@ -96,11 +96,7 @@ class MineralQueryCommand(BaseCommand):
     def execute(self):
         try:
             roman = _alien2roman(self.alien_number)
-        except ValueError as e:
-            return str(e)
-        units = roman2int(roman)
-
-        try:
+            units = roman2int(roman)
             per_unit = Registry().get_mineral(self.mineral)
         except ValueError as e:
             return str(e)

@@ -1,6 +1,6 @@
 import pytest
 
-from merchant.roman2int import roman2int
+from merchantsguide.roman2int import roman2int
 
 
 def test_invalid_inputs():
@@ -21,7 +21,7 @@ def test_invalid_inputs():
 
 
 def test_valid_inputs():
-    with open("roman_test_input") as f:
+    with open('./roman_test_input', 'r') as f:
         lines = f.readlines()
 
     for l in lines:

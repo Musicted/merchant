@@ -21,7 +21,7 @@ def test_invalid_inputs():
 
 
 def test_valid_inputs():
-    with open('./roman_test_input', 'r') as f:
+    with open('merchantsguide/tests/unittests/roman_test_input', 'r') as f:
         lines = f.readlines()
 
     for l in lines:

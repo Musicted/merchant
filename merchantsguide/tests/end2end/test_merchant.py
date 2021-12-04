@@ -6,9 +6,9 @@ def test_trace1():
     Ensure the output is correct for the given example trace
     :return: None
     """
-    with open('./trace_1_in', 'r') as f:
+    with open('merchantsguide/tests/end2end/trace_1_in', 'r') as f:
         lines_in = f.readlines()
-    with open('./trace_1_out', 'r') as f:
+    with open('merchantsguide/tests/end2end/trace_1_out', 'r') as f:
         lines_out = f.readlines()
 
     m = Merchant()

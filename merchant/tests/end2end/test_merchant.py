@@ -1,6 +1,4 @@
-import pytest
-
-from src.merchant import Merchant
+from merchant.merchant import Merchant
 
 
 def test_trace1():

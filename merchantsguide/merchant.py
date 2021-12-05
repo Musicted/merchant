@@ -27,7 +27,7 @@ class Merchant:
         return cmd.execute()
 
     @staticmethod
-    def repl():
+    def repl():  # pragma: no cover
         """
         Initiate a read-execute-print loop (REPL).
 

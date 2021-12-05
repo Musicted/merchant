@@ -1,6 +1,7 @@
 import pytest
 
 from merchantsguide.commands import MineralQueryCommand, MineralUpdateCommand, NumberQueryCommand, NumeralUpdateCommand
+from merchantsguide.commands import UnknownCommand, BaseCommand
 from merchantsguide.registry import Registry
 
 
@@ -71,6 +72,11 @@ def test_update_mineral():
     assert len(r.mineral_prices) == 2
     assert r.get_mineral('Gold') == 10.0
 
+    # check error cases, verify that nothing is changed
+    assert MineralUpdateCommand('Iron', ['bork', 'bark'], 99).execute()[:7] == 'Unknown'
+    assert MineralUpdateCommand('Iron', ['kmar', 'kmar'], 99).execute()[:5] == 'Could'
+    assert r.get_mineral('Iron') == 49.5
+
 
 def test_query_mineral():
     r = Registry()
@@ -94,3 +100,11 @@ def test_query_mineral():
     assert MineralQueryCommand(['glorp'], 'Iron').execute()[:7] == "Unknown"
     assert MineralQueryCommand(['bork'], 'Unobtainium').execute()[:7] == "Unknown"
     assert MineralQueryCommand(['kmar', 'kmar'], 'Iron').execute()[:9] == "Could not"
+
+
+def test_reprs_dont_fail():
+    assert repr(NumeralUpdateCommand('bork', 'I')) != repr(MineralUpdateCommand('Iron', ['bork'], 23))\
+        != repr(NumberQueryCommand(['bork'])) != repr(MineralQueryCommand(['bork'], 'Iron'))\
+        != repr(UnknownCommand())
+
+

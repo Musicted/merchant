@@ -20,7 +20,7 @@ def _alien2roman(alien: [str]):
     return "".join(map(Registry().get_numeral, alien))
 
 
-class BaseCommand(ABC):
+class BaseCommand(ABC):  # pragma: no cover
     """
     Abstract command that either updates the registry or answers a query.
     """

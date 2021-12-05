@@ -8,7 +8,7 @@ class Merchant:
     @staticmethod
     def single_command(s):
         cmd = parse_input(s)
-        return cmd
+        return cmd.execute()
 
     @staticmethod
     def repl():
@@ -16,7 +16,3 @@ class Merchant:
             res = Merchant.single_command(line.strip())
             if res:
                 print(res)
-
-
-if __name__ == '__main__':
-    Merchant().repl()

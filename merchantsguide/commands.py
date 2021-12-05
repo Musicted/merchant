@@ -104,3 +104,11 @@ class MineralQueryCommand(BaseCommand):
 
         return f"{' '.join(self.alien_number)} {self.mineral} is {price} Credits"
 
+
+class UnknownCommand(BaseCommand):
+
+    def __repr__(self):
+        return f"{super().__repr__()}: displays a generic error message"
+
+    def execute(self):
+        return "I have no idea what you are talking about"

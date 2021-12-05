@@ -1,6 +1,6 @@
 from parsimonious import Grammar, ParseError, NodeVisitor
 
-from merchantsguide.commands import MineralQueryCommand, MineralUpdateCommand, NumeralUpdateCommand, NumberQueryCommand
+from merchantsguide.commands import MineralQueryCommand, MineralUpdateCommand, NumeralUpdateCommand, NumberQueryCommand, UnknownCommand
 
 GRAMMAR = Grammar(
     r"""
@@ -74,7 +74,7 @@ def parse_input(s: str):
     try:
         tree = GRAMMAR.parse(s)
     except ParseError:
-        return "I have no idea what you are talking about"
+        return UnknownCommand()
 
     cmd = VISITOR.visit(tree)
-    return cmd.execute()
+    return cmd

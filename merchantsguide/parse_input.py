@@ -1,7 +1,15 @@
+"""
+Parse Input
+===========
+
+Parses (update/query) command strings and constructs appropriate commands.
+"""
 from parsimonious import Grammar, ParseError, NodeVisitor
 
-from merchantsguide.commands import MineralQueryCommand, MineralUpdateCommand, NumeralUpdateCommand, NumberQueryCommand, UnknownCommand
+from merchantsguide.commands import MineralQueryCommand, MineralUpdateCommand, NumeralUpdateCommand, NumberQueryCommand
+from merchantsguide.commands import UnknownCommand, BaseCommand
 
+# The grammar of commands; cf. README.md for an informal description.
 GRAMMAR = Grammar(
     r"""
     input_string = command newline?
@@ -31,6 +39,13 @@ GRAMMAR = Grammar(
 
 
 class CommandVisitor(NodeVisitor):
+    """
+    Traverses the parse tree and constructs an appropriate command object.
+
+    Methods with the signature
+        visit_*node_type*(self, node, visited_children)
+    are called dynamically from the base class.
+    """
 
     def visit_input_string(self, node, visited_children):
         return visited_children[0]
@@ -64,13 +79,28 @@ class CommandVisitor(NodeVisitor):
         return node.text.split(" ")
 
     def generic_visit(self, node, visited_children):
+        """
+        Visit a node not covered explicitly by other methods.
+
+        :param node: the visited node
+        :param visited_children: the node's children (after visiting them)
+        :return: the visited children, if any, else the text matched by the node
+        """
         return visited_children or node.text
 
 
 VISITOR = CommandVisitor()
 
 
-def parse_input(s: str):
+def parse_input(s: str) -> BaseCommand:
+    """
+    Parse an input string and return an appropriate command object.
+
+    If parsing fails, an UnknownCommand is returned.
+
+    :param s: the input string
+    :return: the constructed command
+    """
     try:
         tree = GRAMMAR.parse(s)
     except ParseError:
